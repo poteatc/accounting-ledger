@@ -1,35 +1,39 @@
 package com.pluralsight.finance;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
-    private LocalDate date;
+    private LocalDateTime dateAndTime;
+    private String dateString;
+    private String timeString;
     private String description;
     private String vendor;
     private double amount;
 
     // Default constructor --doesn't have parameters
     public Transaction() {
-        this.date = null;
+        this.dateAndTime = null;
+        this.dateString = "";
+        this.timeString = "";
         this.description = "";
         this.vendor = "";
         this.amount = 0.0;
     }
 
     // Parametrized constructor
-    public Transaction(LocalDate date, String description, String vendor, double amount) {
-        this.date = date;
+    public Transaction(String dateString, String timeString, String description, String vendor, double amount) {
+        this.dateString = dateString;
+        this.timeString = timeString;
         this.description = description;
         this.vendor = vendor;
         this.amount = amount;
-    }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
+        // create a formatter
+        DateTimeFormatter formatter
+                = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        this.dateAndTime = LocalDateTime.parse(dateString + "T" + timeString, formatter);
     }
 
     public String getDescription() {
@@ -59,7 +63,9 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-                "date=" + date +
+                "dateAndTime=" + dateAndTime +
+                ", dateString='" + dateString + '\'' +
+                ", timeString='" + timeString + '\'' +
                 ", description='" + description + '\'' +
                 ", vendor='" + vendor + '\'' +
                 ", amount=" + amount +
