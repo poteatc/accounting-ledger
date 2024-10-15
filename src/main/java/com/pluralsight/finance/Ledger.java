@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class Ledger {
     // Ledger attributes: start and end date for the ledger, list of transactions, and CSV format string
@@ -73,6 +72,22 @@ public class Ledger {
         } catch (IOException e) {
             throw new RuntimeException(e);  // Handle any issues during writing
         }
+    }
+
+    // Adds a new debit (payment) to the csv file and transactions list
+    public void makePayment(String[] paymentInfo) {
+        LocalDateTime ldt = LocalDateTime.now();  // Get current date and time of the payment
+        // Extract transaction details from the paymentInfo array
+        String description = paymentInfo[0];
+        String vendor = paymentInfo[1];
+        Double paymentAmount = Double.parseDouble(paymentInfo[2]);
+
+        // Create a new transaction object using current date and payment details
+        Transaction t = new Transaction(ldt, description, vendor, paymentAmount);
+
+        // Add the new payment to the transactions list and update the CSV file
+        transactions.add(t);
+        updateTransactionsInCSV();
     }
 
     // Method to add a new deposit (income) transaction to the ledger

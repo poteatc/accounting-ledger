@@ -56,7 +56,7 @@ public class Menus {
                     ledger.addDeposit(getDepositInfo());  // Call method to get deposit info and add it to the ledger
                     break;
                 case "p":  // Option to make a payment (currently not implemented)
-                    // makePayment();
+                    ledger.makePayment(getPaymentInfo());
                     break;
                 case "l":  // Option to display the ledger
                     ledger.displayLedger();  // Call method to display the ledger contents
@@ -70,6 +70,39 @@ public class Menus {
                     break;
             }
         } while (!done);  // Continue until the user chooses to exit
+    }
+
+    // Method to get debit payment information from the user
+    private String[] getPaymentInfo() {
+        System.out.println("---Enter your payment information---");
+        System.out.println("Please enter a brief description of the payment: ");
+        String description = scanner.nextLine();  // Read the description from user input
+        System.out.println("Please enter the name of the person or company who made the payment:");  // Prompt for debit entry name
+        String vendor = scanner.nextLine();
+        String paymentAmount = "";
+
+        // Loop to ensure valid deposit amount is entered
+        do {
+            System.out.println("Please enter the payment amount (negative number):");  // Prompt for deposit amount
+            paymentAmount = scanner.nextLine();  // Read deposit amount from user input
+        } while (!isValidPayment(paymentAmount));  // Validate input; continue looping if invalid
+
+        // Return an array of strings containing deposit information
+        return new String[]{description, vendor, paymentAmount};
+    }
+
+    // Method to validate if the payment amount is a negative number
+    private boolean isValidPayment(String paymentAmount) {
+        try {
+            double value = Double.parseDouble(paymentAmount);  // Try to convert the input to a double
+            if (value <= 0) {  // Check if the value is negative
+                return true;  // Return true if valid
+            }
+        } catch (NumberFormatException e) {}  // Catch exception if parsing fails (input is not a number)
+
+        // Inform the user about invalid input
+        System.out.println("Please enter a negative non-zero number... Ex: -14, -385.3, -123.45");
+        return false;  // Return false for invalid input
     }
 
     // Method to collect deposit information from the user
