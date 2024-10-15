@@ -108,7 +108,7 @@ public class Ledger {
     }
 
     // Method to display the entire ledger in the console
-    public void displayLedger() {
+    public void displayAllLedgerEntries() {
         sortLedgerByMostRecent();  // Sort the transactions by the most recent first
         System.out.println("All transactions");
 
@@ -117,6 +117,32 @@ public class Ledger {
             System.out.println(t);
         }
     }
+
+    public void displayDeposits() {
+        sortLedgerByMostRecent();  // Sort the transactions by the most recent first
+        System.out.println("Deposits");
+
+        // Print each transaction in the ledger
+        for (Transaction t : transactions) {
+            if (t.getAmount() > 0) {
+                System.out.println(t);
+            }
+        }
+    }
+
+    public void displayPayments() {
+        sortLedgerByMostRecent();  // Sort the transactions by the most recent first
+        System.out.println("Payments");
+
+        // Print each transaction in the ledger
+        for (Transaction t : transactions) {
+            if (t.getAmount() < 0) {
+                System.out.println(t);
+            }
+        }
+    }
+
+
 
     // Method to sort the ledger by the most recent transaction (in reverse order)
     public void sortLedgerByMostRecent() {
@@ -129,4 +155,5 @@ public class Ledger {
         // Reverse the order to make it descending (most recent first)
         Collections.reverse(transactions);
     }
+
 }

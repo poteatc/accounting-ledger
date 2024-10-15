@@ -59,10 +59,52 @@ public class Menus {
                     ledger.makePayment(getPaymentInfo());
                     break;
                 case "l":  // Option to display the ledger
-                    ledger.displayLedger();  // Call method to display the ledger contents
+                    displayLedgerMenu();  // Call method to display the ledger menu
                     break;
                 case "x":  // Option to exit the application
                     System.out.println("Exiting Account Ledger Application...");  // Inform user about exit
+                    done = true;  // Set done to true to exit the loop
+                    break;
+                default:  // Handle invalid input
+                    System.out.println(invalidInput);  // Print invalid input message
+                    break;
+            }
+        } while (!done);  // Continue until the user chooses to exit
+    }
+
+    private void displayLedgerMenu() {
+        String prompt = """
+                Please enter one of the following options:
+                A) All - display all entries in the ledger
+                D) Deposits - show all deposits
+                P) Payments - show all payments
+                R) Reports - filter ledger
+                H) Home - go back to the home page
+                """;
+
+        boolean done = false; // Control flag to manage the input loop
+        do {
+            System.out.println(ledgerMenuTitle);
+            System.out.println(prompt);  // Print the menu options
+            String input = scanner.nextLine().toLowerCase().trim();  // Read user input and normalize it
+
+            // Handle user input based on the selected option
+            switch (input) {
+                case "a":
+                    //TODO: move method into Menus class
+                    ledger.displayAllLedgerEntries();
+                    break;
+                case "d":
+                    ledger.displayDeposits();
+                    break;
+                case "p":
+                    ledger.displayPayments();
+                    break;
+                case "r":
+                    //displayReportsMenu();
+                    break;
+                case "h":
+                    System.out.println("Returning to Home Menu...");  // Inform user about exit
                     done = true;  // Set done to true to exit the loop
                     break;
                 default:  // Handle invalid input
@@ -128,7 +170,7 @@ public class Menus {
     private boolean isValidDeposit(String input) {
         try {
             double value = Double.parseDouble(input);  // Try to convert the input to a double
-            if (value > 0) {  // Check if the value is positive
+            if (value >= 0) {  // Check if the value is positive
                 return true;  // Return true if valid
             }
         } catch (NumberFormatException e) {}  // Catch exception if parsing fails (input is not a number)
