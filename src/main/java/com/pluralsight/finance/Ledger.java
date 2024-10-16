@@ -43,6 +43,8 @@ public class Ledger {
                     e.printStackTrace();  // Handle any issues converting amount to a number
                 }
             }
+            // Close the reader after reading
+            br.close();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);  // Handle case where the file is not found
         } catch (IOException e) {
@@ -52,6 +54,7 @@ public class Ledger {
 
     // Private method to update the transactions back into a CSV file after making any changes
     private void updateTransactionsInCSV() {
+        sortLedgerByMostRecent();
         String path = "./src/main/resources/transactionsOutput.csv";  // Output path for updated CSV
         try {
             // Create a file writer and buffered writer to write transactions to a new CSV file
@@ -118,6 +121,7 @@ public class Ledger {
         }
     }
 
+    // Displays only deposits (positive) entries from the ledger
     public void displayDeposits() {
         sortLedgerByMostRecent();  // Sort the transactions by the most recent first
         System.out.println("Deposits");
@@ -156,4 +160,66 @@ public class Ledger {
         Collections.reverse(transactions);
     }
 
+    // Filter and display transactions from the current month to date
+    public void filterMonthToDate() {
+        sortLedgerByMostRecent();
+        int monthValue = LocalDate.now().getMonthValue();
+        for (Transaction t : transactions) {
+            if (t.getIsoLocalDateTime().getMonthValue() == monthValue) {
+                System.out.println(t);
+            }
+        }
+    }
+
+    // Filter and display transactions from the previous month
+    public void filterByPreviousMonth() {
+        sortLedgerByMostRecent();
+        int previousMonthValue = LocalDate.now().getMonthValue() - 1;
+        if (previousMonthValue == 0) { // If current month is January, wrap value so it is December
+            previousMonthValue = 12;
+        }
+        for (Transaction t : transactions) {
+            if (t.getIsoLocalDateTime().getMonthValue() == previousMonthValue) {
+                System.out.println(t);
+            }
+        }
+    }
+
+    // Filter and display transactions for the current year to date
+    public void filterYearToDate() {
+        sortLedgerByMostRecent();
+        int yearValue = LocalDate.now().getYear();
+        for (Transaction t : transactions) {
+            if (t.getIsoLocalDateTime().getYear() == yearValue) {
+                System.out.println(t);
+            }
+        }
+    }
+
+    // Filter and display transactions from the previous year
+    public void filterByPreviousYear() {
+        sortLedgerByMostRecent();
+        int previousYearValue = LocalDate.now().getYear() - 1;
+        for (Transaction t : transactions) {
+            if (t.getIsoLocalDateTime().getYear() == previousYearValue) {
+                System.out.println(t);
+            }
+        }
+
+    }
+
+    // Filter and display transactions from the previous year
+    public void filterByVendor(String input) {
+        sortLedgerByMostRecent();
+        boolean found = false;
+        for (Transaction t : transactions) {
+            if (t.getVendor().equalsIgnoreCase(input)) {
+                System.out.println(t);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("There are no vendors by that name in the ledger...");
+        }
+    }
 }

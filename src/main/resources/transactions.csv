@@ -1,5 +1,9 @@
 date|time|description|vendor|amount
 2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
-2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.0
-2023-04-16|11:15:00|Invoice 1001 paid|Joe|1500.0
-2023-04-14|11:15:00|Invoice 1001 paid|Joe|1500.0
+2023-04-15|11:15:00|Invoice 1000 paid|Joe|1500.0
+2023-04-16|11:15:00|Invoice 1002 paid|Joe|1500.0
+2023-04-14|11:15:00|Invoice 1003 paid|Joe|1500.0
+2024-10-14|11:15:00|Invoice 1004 paid|Joe|500.0
+2024-10-02|11:15:00|Invoice 1005 paid|Caleb|2000.0
+2024-09-15|09:13:00|mouse|Joe|-20.0
+2024-09-03|02:45:00|Butterfingers|Caleb|-5.0

@@ -1,5 +1,6 @@
 package com.pluralsight.finance;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menus {
@@ -101,7 +102,7 @@ public class Menus {
                     ledger.displayPayments();
                     break;
                 case "r":
-                    //displayReportsMenu();
+                    displayReportsMenu();
                     break;
                 case "h":
                     System.out.println("Returning to Home Menu...");  // Inform user about exit
@@ -112,6 +113,74 @@ public class Menus {
                     break;
             }
         } while (!done);  // Continue until the user chooses to exit
+    }
+
+    private void displayReportsMenu() {
+        String prompt = """
+                Filter the ledger by choosing one of the following options:
+                1) Month to Date
+                2) Previous month
+                3) Year to Date
+                4) Previous Year
+                5) Search by Vendor - displays all entries from the specified vendor
+                0) Back - go back to the ledger screen
+                """;
+
+        boolean done = false; // Control flag to manage the input loop
+        do {
+            System.out.println(reportsMenuTitle);
+            System.out.println(prompt);  // Print the menu options
+            //String input = scanner.nextLine().toLowerCase().trim();  // Read user input and normalize it
+            int input = getIntegerFromUserInput();
+
+            // Handle user input based on the selected option
+            switch (input) {
+                case 1:
+                    ledger.filterMonthToDate();
+                    break;
+                case 2:
+                    ledger.filterByPreviousMonth();
+                    break;
+                case 3:
+                    ledger.filterYearToDate();
+                    break;
+                case 4:
+                    ledger.filterByPreviousYear();
+                    break;
+                case 5:
+                    searchByVendor();
+                    break;
+                case 0:
+                    System.out.println("Returning to Ledger Menu...");
+                    done = true;  // Set done to true to exit the loop
+                    break;
+                default:  // Handle invalid input
+                    System.out.println(invalidInput);  // Print invalid input message
+                    break;
+            }
+        } while (!done);  // Continue until the user chooses to exit
+    }
+
+    private void searchByVendor() {
+        System.out.println("Please enter the name of the vendor: ");
+        String input = scanner.nextLine().toLowerCase().trim();
+        ledger.filterByVendor(input);
+    }
+
+    private int getIntegerFromUserInput() {
+        boolean isValid = false;
+        int input = 0;
+
+        do {
+            try {
+                input = scanner.nextInt();
+                scanner.nextLine();
+                isValid = true;
+            } catch (Exception e) {
+                System.out.println("Please enter an integer...");
+            }
+        } while (!isValid);
+        return input;
     }
 
     // Method to get debit payment information from the user
