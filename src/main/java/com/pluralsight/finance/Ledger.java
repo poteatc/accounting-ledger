@@ -9,16 +9,12 @@ import java.util.Comparator;
 
 public class Ledger {
     // Ledger attributes: start and end date for the ledger, list of transactions, and CSV format string
-    private LocalDate startDate;
-    private LocalDate endDate;
     private ArrayList<Transaction> transactions;
     private String csvLineFormat;
 
     // Constructor initializes transactions list, and null for date and format fields
     public Ledger() {
         this.transactions = new ArrayList<>();
-        this.startDate = null;
-        this.endDate = null;
         this.csvLineFormat = null;
     }
 
@@ -77,6 +73,10 @@ public class Ledger {
         }
     }
 
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
     // Adds a new debit (payment) to the csv file and transactions list
     public void makePayment(String[] paymentInfo) {
         LocalDateTime ldt = LocalDateTime.now();  // Get current date and time of the payment
@@ -113,8 +113,6 @@ public class Ledger {
     // Method to display the entire ledger in the console
     public void displayAllLedgerEntries() {
         sortLedgerByMostRecent();  // Sort the transactions by the most recent first
-        System.out.println("All transactions");
-
         // Print each transaction in the ledger
         for (Transaction t : transactions) {
             System.out.println(t);
@@ -124,7 +122,6 @@ public class Ledger {
     // Displays only deposits (positive) entries from the ledger
     public void displayDeposits() {
         sortLedgerByMostRecent();  // Sort the transactions by the most recent first
-        System.out.println("Deposits");
 
         // Print each transaction in the ledger
         for (Transaction t : transactions) {
@@ -136,7 +133,6 @@ public class Ledger {
 
     public void displayPayments() {
         sortLedgerByMostRecent();  // Sort the transactions by the most recent first
-        System.out.println("Payments");
 
         // Print each transaction in the ledger
         for (Transaction t : transactions) {
@@ -146,12 +142,10 @@ public class Ledger {
         }
     }
 
-
-
     // Method to sort the ledger by the most recent transaction (in reverse order)
     public void sortLedgerByMostRecent() {
         // Create a comparator that compares transactions based on their date and time
-        Comparator<Transaction> comparator = (c1, c2) -> Integer.valueOf(c1.getIsoLocalDateTime().compareTo(c2.getIsoLocalDateTime()));
+        Comparator<Transaction> comparator = (t1, t2) -> Integer.valueOf(t1.getIsoLocalDateTime().compareTo(t2.getIsoLocalDateTime()));
 
         // Sort the transactions list in ascending order based on the comparator
         Collections.sort(transactions, comparator);

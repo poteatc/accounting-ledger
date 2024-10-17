@@ -1,7 +1,13 @@
 package com.pluralsight.finance;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Menus {
     private Scanner scanner;  // Scanner to read user input from the console
@@ -23,6 +29,10 @@ public class Menus {
                 |            Reports            |
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 """;
+
+    // Ledger header
+    private String ledgerHeader = String.format("%-15s %-12s %-20s %-10s %-10s",
+            "Date", "Time", "Description", "Vendor", "Amount");
 
     // Commonly printed statements for user interaction
     private String invalidInput = "Sorry, your input does not match any of the given options. Please try again!\n"; // Message for invalid input
@@ -93,12 +103,15 @@ public class Menus {
             switch (input) {
                 case "a":
                     //TODO: move method into Menus class
+                    System.out.println(ledgerHeader);
                     ledger.displayAllLedgerEntries();
                     break;
                 case "d":
+                    System.out.println(ledgerHeader);
                     ledger.displayDeposits();
                     break;
                 case "p":
+                    System.out.println(ledgerHeader);
                     ledger.displayPayments();
                     break;
                 case "r":
@@ -123,6 +136,7 @@ public class Menus {
                 3) Year to Date
                 4) Previous Year
                 5) Search by Vendor - displays all entries from the specified vendor
+                6) Custom search
                 0) Back - go back to the ledger screen
                 """;
 
@@ -136,19 +150,26 @@ public class Menus {
             // Handle user input based on the selected option
             switch (input) {
                 case 1:
+                    System.out.println(ledgerHeader);
                     ledger.filterMonthToDate();
                     break;
                 case 2:
+                    System.out.println(ledgerHeader);
                     ledger.filterByPreviousMonth();
                     break;
                 case 3:
+                    System.out.println(ledgerHeader);
                     ledger.filterYearToDate();
                     break;
                 case 4:
+                    System.out.println(ledgerHeader);
                     ledger.filterByPreviousYear();
                     break;
                 case 5:
                     searchByVendor();
+                    break;
+                case 6:
+                    customSearch();
                     break;
                 case 0:
                     System.out.println("Returning to Ledger Menu...");
@@ -161,9 +182,64 @@ public class Menus {
         } while (!done);  // Continue until the user chooses to exit
     }
 
+    // TODO : Filter by custom values for ledger properties
+    private void customSearch() {
+        ledger.sortLedgerByMostRecent();
+        ArrayList<Transaction> filtered = ledger.getTransactions();
+        System.out.println("Please enter the start date: ");
+        String startDateString = scanner.nextLine();
+        LocalDate startDate = null;
+        if (!startDateString.equals("")) {
+            try {
+                startDate = LocalDate.parse(startDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            } catch (Exception e) {}
+        }
+        System.out.println("Please enter the end date: ");
+        String endDateString = scanner.nextLine();
+        LocalDate endDate = null;
+        if (!endDateString.equals("")) {
+            try {
+                endDate = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            } catch (Exception e) {}
+        }
+        System.out.println("Please enter a description of the transaction to filter by: ");
+        String description = scanner.nextLine();
+        System.out.println("Please enter the amount: ");
+        String amountString = scanner.nextLine();
+        double amount = 0.0;
+        if (!amountString.equals("")) {
+            try {
+                amount = Double.parseDouble(amountString);
+            } catch (Exception e) {}
+        }
+        // Create a copy of the collection
+        List<Transaction> list = new CopyOnWriteArrayList<>(filtered);
+        List<Transaction> copy = new ArrayList<>(list);
+
+        //Iterate over the copy, while modifying the original.
+        for (Transaction t : copy) {
+            if (!startDateString.equals("") && t.getIsoLocalDateTime().isBefore(startDate.atStartOfDay())) {
+                filtered.remove(t);
+            }
+            if (!endDateString.equals("") && t.getIsoLocalDateTime().isAfter(endDate.atStartOfDay())) {
+                filtered.remove(t);
+            }
+            if (!description.equals("") && !t.getDescription().toLowerCase().contains(description.toLowerCase())) {
+                filtered.remove(t);
+            }
+            if (!amountString.equals("") && !(t.getAmount() == amount)) {
+                filtered.remove(t);
+            }
+        }
+        for (Transaction t : filtered) {
+            System.out.println(t);
+        }
+    }
+
     private void searchByVendor() {
         System.out.println("Please enter the name of the vendor: ");
         String input = scanner.nextLine().toLowerCase().trim();
+        System.out.println(ledgerHeader);
         ledger.filterByVendor(input);
     }
 
