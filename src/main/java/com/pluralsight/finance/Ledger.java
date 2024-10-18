@@ -51,7 +51,7 @@ public class Ledger {
     // Private method to update the transactions back into a CSV file after making any changes
     private void updateTransactionsInCSV() {
         sortLedgerByMostRecent();
-        String path = "./src/main/resources/transactionsOutput.csv";  // Output path for updated CSV
+        String path = "./src/main/resources/transactions.csv";  // Output path for updated CSV
         try {
             // Create a file writer and buffered writer to write transactions to a new CSV file
             FileWriter fw = new FileWriter(path);

@@ -182,60 +182,90 @@ public class Menus {
         } while (!done);  // Continue until the user chooses to exit
     }
 
-    // TODO : Filter by custom values for ledger properties
     private void customSearch() {
+        // Sort the ledger transactions by the most recent date
         ledger.sortLedgerByMostRecent();
+
+        // Retrieve the list of transactions from the ledger
         ArrayList<Transaction> filtered = ledger.getTransactions();
+
+        // Prompt the user to enter the start date for filtering
         System.out.println("Please enter the start date: ");
         String startDateString = scanner.nextLine();
         LocalDate startDate = null;
+
+        // If the user provided a start date, attempt to parse it into a LocalDate object
         if (!startDateString.equals("")) {
             try {
                 startDate = LocalDate.parse(startDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                // If the date parsing fails, ignore the exception
+            }
         }
+
+        // Prompt the user to enter the end date for filtering
         System.out.println("Please enter the end date: ");
         String endDateString = scanner.nextLine();
         LocalDate endDate = null;
+
+        // If the user provided an end date, attempt to parse it into a LocalDate object
         if (!endDateString.equals("")) {
             try {
                 endDate = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                // If the date parsing fails, ignore the exception
+            }
         }
+
+        // Prompt the user to enter a description for filtering
         System.out.println("Please enter a description of the transaction to filter by: ");
         String description = scanner.nextLine();
+
+        // Prompt the user to enter an amount for filtering
         System.out.println("Please enter the amount: ");
         String amountString = scanner.nextLine();
         double amount = 0.0;
+
+        // If the user provided an amount, attempt to parse it into a double
         if (!amountString.equals("")) {
             try {
                 amount = Double.parseDouble(amountString);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                // If parsing fails, ignore the exception
+            }
         }
-        // Create a copy of the collection
-        List<Transaction> list = new CopyOnWriteArrayList<>(filtered);
-        List<Transaction> copy = new ArrayList<>(list);
 
-        //Iterate over the copy, while modifying the original.
+        // Create a thread-safe copy of the filtered transactions to avoid concurrent modification issues
+        List<Transaction> list = new CopyOnWriteArrayList<>(filtered);
+        List<Transaction> copy = new ArrayList<>(list); // Copy the list for iteration
+
+        // Iterate over the copy while modifying the original filtered list
         for (Transaction t : copy) {
+            // Remove transactions that are before the specified start date
             if (!startDateString.equals("") && t.getIsoLocalDateTime().isBefore(startDate.atStartOfDay())) {
                 filtered.remove(t);
             }
+            // Remove transactions that are after the specified end date
             if (!endDateString.equals("") && t.getIsoLocalDateTime().isAfter(endDate.atStartOfDay())) {
                 filtered.remove(t);
             }
+            // Remove transactions that don't match the specified description (case-insensitive)
             if (!description.equals("") && !t.getDescription().toLowerCase().contains(description.toLowerCase())) {
                 filtered.remove(t);
             }
+            // Remove transactions that don't match the specified amount
             if (!amountString.equals("") && !(t.getAmount() == amount)) {
                 filtered.remove(t);
             }
         }
+
+        // Print out the remaining filtered transactions
         for (Transaction t : filtered) {
             System.out.println(t);
         }
     }
 
+    // Prompts user for vendor name and filters ledger
     private void searchByVendor() {
         System.out.println("Please enter the name of the vendor: ");
         String input = scanner.nextLine().toLowerCase().trim();
@@ -243,6 +273,7 @@ public class Menus {
         ledger.filterByVendor(input);
     }
 
+    // Loops to prompt user for an integer input until they enter a valid number
     private int getIntegerFromUserInput() {
         boolean isValid = false;
         int input = 0;
