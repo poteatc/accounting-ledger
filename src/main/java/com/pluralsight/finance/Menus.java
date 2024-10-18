@@ -14,25 +14,25 @@ public class Menus {
     private Ledger ledger;  // Instance of the Ledger class to manage financial transactions
 
     // Menu titles for different screens
-    private String homeScreenTitle = """
+    private String homeScreenTitle = ConsoleColors.GREEN_BOLD_BRIGHT + """
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 |          Home Screen          |
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                """;
-    private String ledgerMenuTitle = """
+                """ + ConsoleColors.RESET;
+    private String ledgerMenuTitle = ConsoleColors.GREEN_BOLD_BRIGHT + """
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 |            Ledger             |
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                """;
-    private String reportsMenuTitle = """
+                """ + ConsoleColors.RESET;
+    private String reportsMenuTitle = ConsoleColors.GREEN_BOLD_BRIGHT + """
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 |            Reports            |
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                """;
+                """ + ConsoleColors.RESET;
 
     // Ledger header
-    private String ledgerHeader = String.format("%-15s %-12s %-20s %-10s %-10s",
-            "Date", "Time", "Description", "Vendor", "Amount");
+    private String ledgerHeader = ConsoleColors.CYAN_UNDERLINED + String.format("%-15s %-12s %-20s %-10s %-10s",
+            "Date", "Time", "Description", "Vendor", "Amount") + ConsoleColors.RESET;
 
     // Commonly printed statements for user interaction
     private String invalidInput = "Sorry, your input does not match any of the given options. Please try again!\n"; // Message for invalid input
@@ -102,7 +102,6 @@ public class Menus {
             // Handle user input based on the selected option
             switch (input) {
                 case "a":
-                    //TODO: move method into Menus class
                     System.out.println(ledgerHeader);
                     ledger.displayAllLedgerEntries();
                     break;

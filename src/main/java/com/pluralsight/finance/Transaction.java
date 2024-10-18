@@ -90,14 +90,6 @@ public class Transaction {
     // Override the toString method to provide a readable format for printing a transaction object
     @Override
     public String toString() {
-        return String.format("%-15s %-12s %-20s %-10s %-10.2f", dateString, timeString, description, vendor, amount);
-//        return "Transaction{" +
-//                "dateAndTime=" + isoLocalDateTime +  // Display the full ISO date and time
-//                ", dateString='" + dateString + '\'' +  // Display the formatted date
-//                ", timeString='" + timeString + '\'' +  // Display the formatted time
-//                ", description='" + description + '\'' +  // Display the transaction description
-//                ", vendor='" + vendor + '\'' +  // Display the vendor
-//                ", amount=" + amount +  // Display the amount
-//                '}';
+        return String.format("%-15s %-12s %-20s %-10s %10.2f", dateString, timeString, description, vendor, amount);
     }
 }
