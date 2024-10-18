@@ -23,6 +23,9 @@ When the application starts, users are presented with the Home Screen Menu. The 
 - **L**: View the ledger menu.
 - **X**: Exit the application.
 
+![image](https://github.com/user-attachments/assets/64130a2b-d1d3-4141-9eed-c536fe2adef9)
+
+
 ### Ledger Menu
 
 The Ledger Menu allows users to view and manage transactions. Options include:
@@ -32,6 +35,9 @@ The Ledger Menu allows users to view and manage transactions. Options include:
 - **P**: View only payments.
 - **R**: Access the reports menu for advanced filtering.
 - **H**: Return to the Home Screen.
+
+![image](https://github.com/user-attachments/assets/4eaeb492-df88-440c-a839-adae709d90b8)
+
 
 ### Reports Menu
 
@@ -44,6 +50,9 @@ The Reports Menu provides various filters for generating reports:
 - **5**: Search transactions by vendor.
 - **6**: Perform a custom search by date range, description, and amount.
 
+![image](https://github.com/user-attachments/assets/88d93cc9-6dfa-49be-ba7e-469d847ec331)
+
+
 - ### Custom Search
 
 The custom search allows you to filter transactions based on the following criteria:
@@ -51,6 +60,9 @@ The custom search allows you to filter transactions based on the following crite
 - **Start Date** and **End Date**: Filter transactions within a specific date range.
 - **Description**: Search for a specific keyword in the transaction description.
 - **Amount**: Filter by exact transaction amount.
+
+![image](https://github.com/user-attachments/assets/b773ee0c-845f-499c-bb03-bad13f8d51a6)
+
 
 ## Code Structure
 
@@ -103,3 +115,10 @@ Ex.
 - **Description**: A brief description of the transaction.
 - **Vendor**: The person or company involved in the transaction.
 - **Amount**: The transaction amount, where negative values represent payments (debits).
+
+
+## Interesting Code: Sorting Transactions by Date and Time
+
+![image](https://github.com/user-attachments/assets/abfb79e5-1c9f-469b-aff5-7cfc94723942)
+
+- This code is interesting because it demonstrates how to sort a list of transactions by their date using a custom comparator and then reverse the order to show the most recent transaction first. 
